@@ -91,8 +91,7 @@ begin
   begin
     if FList[location].product = Item.product then
     begin
-      FList[location] := FList[FLength];
-      dec(FLength);
+      Delete(location);
       result := true;
       dec(location); // to ensure that item moved up is checked for removal
     end;
