@@ -114,20 +114,32 @@ function TArrayList.Found(Item: TItem; var location: integer): boolean;
 // search for Item and return whether or not it is there
 // location parameter wil contain index of first match
 var
-  current: integer;
+  current, maxLocation, minLocation: integer;
+  found: boolean;
 begin
-  current := 1;
-  location := 0;
-  result := false;
-  while (current <= FLength) and (result = false) do
+  minLocation:= 1;
+  maxLocation:= FLength;
+  found:= false;
+
+  current:= maxLocation div 2;
+
+  while found <> true do
   begin
-    if FList[current].product = Item.product then
-    begin
-      result := true;
-      location := current;
-    end;
-    inc(current);
+    if Item.product = FList[current].product then
+      found := true
+    else if (Item.product > FList[current].product) then
+      begin
+        minLocation:= current;
+        current:= (minLocation + maxLocation) div 2;
+      end
+    else if Item.product < FList[current].product then
+      begin
+        maxLocation:= current;
+        current:= (minLocation + maxLocation) div 2;
+      end;
   end;
+
+  result:= found;
 end;
 
 function TArrayList.Retrieve(n: integer): TItem;
